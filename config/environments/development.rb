@@ -1,4 +1,5 @@
 require "active_support/core_ext/integer/time"
+require Rails.root.join("app/middleware/intervals_mcp/request_debugger")
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -11,6 +12,10 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
+
+  # Log detailed request and integration diagnostics during local development.
+  config.log_level = :debug
+  config.middleware.insert_before 0, IntervalsMcp::RequestDebugger
 
   # Enable server timing.
   config.server_timing = true
@@ -37,6 +42,9 @@ Rails.application.configure do
 
   # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
+
+  # Allow the configured public MCP hostname to reach the local MCP endpoint.
+  config.hosts << ENV.fetch("MCP_PUBLIC_HOST", ENV.fetch("NGROK_HOST", "b863-88-97-204-75.ngrok-free.app"))
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

@@ -7,8 +7,8 @@ module IntervalsMcp
         name: "intervals_icu",
         title: "Intervals.icu",
         version: "0.1.0",
-        instructions: "Use these read-only tools to retrieve Intervals.icu activities. List activities before requesting a specific activity when its ID is unknown. Use analyze_activity_intervals for workout interval performance and heart-rate insights.",
-        tools: [ ListActivitiesTool, GetActivityTool, AnalyzeActivityIntervalsTool ],
+        instructions: "Use search to discover activities by date range, then use fetch with an activity ID to retrieve one. The list_activities and get_activity tools remain available for domain-specific clients. Use analyze_activity_intervals for factual workout interval performance and heart-rate data; interpret the results in the client.",
+        tools: [ SearchTool, FetchTool, ListActivitiesTool, GetActivityTool, AnalyzeActivityIntervalsTool ],
       )
     end
   end
