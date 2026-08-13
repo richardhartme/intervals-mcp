@@ -14,13 +14,12 @@ RSpec.describe IntervalsMcp::ActivityIntervalAnalyzer do
     ]
   end
 
-  it "returns work-interval splits, heart-rate drift, and repeat insights" do
+  it "returns work-interval splits, heart-rate drift data, and neutral repeat observations" do
     expect(analysis.fetch("intervals")).to contain_exactly(
       include("number" => 1, "label" => "Rep 1", "split" => include("elapsed_seconds" => 300), "heart_rate" => include("drift_percent" => 2.0)),
       include("number" => 2, "label" => "Rep 2", "heart_rate" => include("drift_percent" => 6.2)),
     )
-    expect(analysis.fetch("insights")).to include(
-      "Rep 2 showed +6.2% heart-rate drift.",
+    expect(analysis.fetch("observations")).to include(
       "From the first to final work interval, average power changed -5.0% (300 to 285 W).",
       "From the first to final work interval, average heart rate changed +6.7% (150 to 160 bpm).",
     )

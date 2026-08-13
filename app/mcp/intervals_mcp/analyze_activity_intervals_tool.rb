@@ -3,7 +3,7 @@
 module IntervalsMcp
   class AnalyzeActivityIntervalsTool < MCP::Tool
     tool_name "analyze_activity_intervals"
-    description "Summarize an activity's detected intervals, including splits, performance, heart rate, and Intervals.icu decoupling."
+    description "Return factual summaries of an activity's detected intervals, including splits, performance, heart rate, and Intervals.icu decoupling."
     annotations read_only_hint: true, destructive_hint: false, idempotent_hint: true, open_world_hint: true
     input_schema(
       properties: {

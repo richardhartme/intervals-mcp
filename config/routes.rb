@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
-  mcp_server = IntervalsMcp::Server.build
-  mount MCP::Server::Transports::StreamableHTTPTransport.new(mcp_server) => "/mcp"
+  mcp_public_host = ENV.fetch("MCP_PUBLIC_HOST", ENV.fetch("NGROK_HOST", "b863-88-97-204-75.ngrok-free.app"))
+  mcp_transport = MCP::Server::Transports::StreamableHTTPTransport.new(
+    IntervalsMcp::Server.build,
+    allowed_hosts: [ mcp_public_host ],
+    stateless: true,
+    enable_json_response: true,
+  )
+  mount mcp_transport => "/mcp"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

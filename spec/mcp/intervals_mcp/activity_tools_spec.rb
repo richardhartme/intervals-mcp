@@ -59,12 +59,19 @@ RSpec.describe "activity tools" do
     )
   end
 
-  it "registers both tools with read-only annotations" do
+  it "registers ChatGPT-compatible search and fetch tools with read-only annotations" do
     tools = IntervalsMcp::Server.build.tools
 
-    expect(tools.keys).to contain_exactly("analyze_activity_intervals", "get_activity", "list_activities")
+    expect(tools.keys).to contain_exactly("analyze_activity_intervals", "fetch", "get_activity", "list_activities", "search")
+    expect(tools.fetch("search").annotations_value.read_only_hint).to be(true)
+    expect(tools.fetch("fetch").annotations_value.read_only_hint).to be(true)
     expect(tools.fetch("list_activities").annotations_value.read_only_hint).to be(true)
     expect(tools.fetch("get_activity").annotations_value.read_only_hint).to be(true)
     expect(tools.fetch("analyze_activity_intervals").annotations_value.read_only_hint).to be(true)
+  end
+
+  it "uses the same retrieval implementations for ChatGPT-compatible tools" do
+    expect(IntervalsMcp::SearchTool.method(:call).owner).to eq(IntervalsMcp::ListActivitiesTool.singleton_class)
+    expect(IntervalsMcp::FetchTool.method(:call).owner).to eq(IntervalsMcp::GetActivityTool.singleton_class)
   end
 end
